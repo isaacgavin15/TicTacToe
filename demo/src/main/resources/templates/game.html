@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<table>
+			<tbody>
+				<tr th:each="row, rowStat : ${#numbers.sequence(0, boardSize-1)}">
+					<td th:each="col, colStat : ${#numbers.sequence(0, boardSize-1)}">
+						<span th:text="${'(' + currBoard[rowStat.index][colStat.index] + ')'}"></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<form action="/tictac/move" method="post" th:object="${currPlayer}">
+			<div th:if="${message != null}">
+				<br>
+				<label th:text="${message}"></label>
+			</div>
+			<br>
+			<label th:text="${currPlayer.name + '`s turn. (' + currPlayer.sign + ')'}"></label>
+			<input type="hidden" name="name" th:value="*{name}" />
+		    <input type="hidden" name="sign" th:value="*{sign}" />
+			<br>
+			<label> Input desired coordinates :</label>
+			<br>
+			<label for="x_coor">X : </label><input type="number" id="x_coor" name="x" required th:disabled="${state != null}">
+			<label for="y_coor">Y : </label><input type="number" id="y_coor" name="y" required th:disabled="${state != null}">
+			<div th:if="${state == null}">
+				<br>
+				<button type="submit">Confirm</button>
+			</div>
+		</form>
+		<form action="/tictac/home" method="get" th:if="${state != null}">
+			<br>
+			<button type="submit">New Game</button>
+		</form>
+	</div>
+</body>
+</html>
